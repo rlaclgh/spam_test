@@ -1,9 +1,10 @@
 const axios = require("axios");
-const url = require("url");
+const extractDomain = require("./extract_domain");
 
 const getRedirectDomain = async (rawUrl) => {
   const response = await axios(rawUrl);
-  const domain = url.parse(response.request.res.responseUrl, {}).hostname;
+
+  const domain = extractDomain(response.request.res.responseUrl);
   return domain;
 };
 
