@@ -9,20 +9,23 @@ const isSpam = async (content, spamLinkDomains, redirectionDepth) => {
   if (urls.length === 0) return true;
   if (spamLinkDomains.length === 0) return true;
 
+  const promises = [];
+
   for (const url of urls) {
-    const result = await isSpamRecursive(
+    const promise = isSpamRecursive(
       0,
       url,
       spamLinkDomains,
       redirectionDepth,
       checked
     );
-    if (result) {
-      return true;
-    }
+    promises.push(promise);
   }
 
-  return false;
+  const result = await Promise.all(promises).then((results) => {
+    return results.some((val) => val == true);
+  });
+  return result;
 };
 
 const isSpamRecursive = async (
