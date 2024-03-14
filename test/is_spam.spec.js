@@ -1,5 +1,4 @@
-import isSpam from "../src/is_spam";
-
+const isSpam = require("../src/is_spam");
 test("init test", () => {
   expect(isSpam()).toBe(false);
 });
